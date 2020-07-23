@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - 'src/**'
 env:
   IMAGE_NAME: ${{ secrets.DOCKER_IMAGE }}
 jobs:
