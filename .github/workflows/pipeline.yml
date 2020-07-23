@@ -20,8 +20,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Docker Build and Push
-        working-directory: ./src
         run: |
-          docker build . -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:latest
+          docker build -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:latest ./src
           docker push $IMAGE_NAME:${{ github.sha }}
           docker push $IMAGE_NAME:latest
