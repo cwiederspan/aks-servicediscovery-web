@@ -4,7 +4,7 @@ on:
     branches:
       - master
     paths:
-      - src
+      - 'src/**'
 env:
   IMAGE_NAME: ${{ secrets.DOCKER_IMAGE }}
 jobs:
