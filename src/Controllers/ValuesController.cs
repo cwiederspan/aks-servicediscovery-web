@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 
-using Aks.Services.Web.Models;
-
 namespace Aks.Services.Web.Controllers {
 
     [ApiController]
@@ -14,8 +12,8 @@ namespace Aks.Services.Web.Controllers {
     public class DataController : ControllerBase {
 
         private readonly ILogger<DataController> Logger;
+
         private readonly string Identifier;
-        private readonly string ChildUrl;
 
         public DataController(
             ILogger<DataController> logger,
@@ -24,23 +22,17 @@ namespace Aks.Services.Web.Controllers {
 
             this.Logger = logger;
             this.Identifier = configuration.GetValue<string>("Identifier");
-            this.ChildUrl = configuration.GetValue<string>("ChildUrl");
         }
 
         [HttpGet]
-        public async Task<Data> GetAsync() {
+        public IActionResult Get() {
 
-            Data child = null;
+            var result = new {
+                Identifier = this.Identifier,
+                Timestamp = DateTime.UtcNow.ToString()
+            };
 
-            if (String.IsNullOrEmpty(this.ChildUrl) == false) {
-                var client = new System.Net.Http.HttpClient();
-                var childValue = await client.GetStringAsync(this.ChildUrl);
-                child = new Data(childValue);
-            }
-
-            var result = new Data(this.Identifier, child);
-
-            return result;
+            return new JsonResult(result);
         }
     }
 }
